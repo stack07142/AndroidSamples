@@ -26,6 +26,8 @@
 ### 6. Sample_ListView
  - ProgressDialog
  - Thread
- - ListView(Adapter Pattern, ViewHolder Pattern), BaseAdapter
-
+ - ListView
+	- Adapter Pattern
+	- ViewHolder Pattern
+	- BaseAdapter
 
