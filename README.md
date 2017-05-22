@@ -31,3 +31,9 @@
 	- ViewHolder Pattern
 	- BaseAdapter
 
+### 7. Sample_ViewPager (v4.Fragment)
+ - ViewPager
+ - Hide ActionBar
+ - Hide StatusBar
+
+
