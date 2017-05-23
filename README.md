@@ -36,4 +36,7 @@
  - Hide ActionBar
  - Hide StatusBar
 
+### 8. Sample_ViewPager(AppFragment)
+ - ViewPager
+
 
