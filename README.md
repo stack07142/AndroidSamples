@@ -42,4 +42,12 @@
 ### 8. Sample_ViewPager(AppFragment)
  - ViewPager
 
+### 9. Sample_CustomView2
 
+![](https://dl.dropboxusercontent.com/s/5h7p4v6w5lp7hv8/BDD05D6F-337E-4A53-9384-9A9349BBC546-17554-00009BC6C442B04A.gif?dl=0)
+
+ - Used the merge tag to avoid unnecessary overlap of Linear Layout in CustomView
+ - Define custom attributes for your view in a declare-styleable resource element
+ - Specify values for the attributes in your XML layout
+ - Retrieve attribute values at runtime
+ - Apply the retrieved attribute values to your view
