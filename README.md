@@ -58,7 +58,7 @@
 
  - Adding fragments statically via XML (Section1)
  - Interaction between a fragment and an activity
- - Adding fragments dynamically to an Activity (Section1)
+ - Adding fragments dynamically to an Activity (Section2)
  - Factory Method Pattern
  - FragmentTransaction
  - OnBackStackChangedListener
