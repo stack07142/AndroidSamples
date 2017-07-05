@@ -51,3 +51,14 @@
  - Specify values for the attributes in your XML layout
  - Retrieve attribute values at runtime
  - Apply the retrieved attribute values to your view
+
+### 10. Sample_Fragment
+
+![](https://dl.dropboxusercontent.com/s/urzxsflrag9ffdb/3E80EAFE-0E1B-4FCA-9A6F-AE6492B30B84-17554-0000C9D21D1ED7A0.gif?dl=0)
+
+ - Adding fragments statically via XML (Section1)
+ - Interaction between a fragment and an activity
+ - Adding fragments dynamically to an Activity (Section1)
+ - Factory Method Pattern
+ - FragmentTransaction
+ - OnBackStackChangedListener
