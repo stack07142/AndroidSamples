@@ -62,3 +62,12 @@
  - Factory Method Pattern
  - FragmentTransaction
  - OnBackStackChangedListener
+
+### 11. Sample_Retrofit
+
+![](https://dl.dropboxusercontent.com/s/qe6qoue7u1nho0z/10EC6F31-D707-4288-AD7E-8CE7F1B6735B-11760-0000245E330F2609.gif?dl=0)
+
+ - Using the Retrofit2 HTTP client for Android
+   : Get Contributors list from GitHub
+ - Floating Action Button
+ - SnackBar
