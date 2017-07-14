@@ -71,3 +71,11 @@
    : Get Contributors list from GitHub
  - Floating Action Button
  - SnackBar
+
+### 12. Sample_ShapeDrawable
+
+![](https://dl.dropboxusercontent.com/s/bnwuse632993raf/27CCD8F0-B309-4FC7-8929-20769B4E6A9E-6355-00003B3CA5CED9B4.gif?dl=0)
+
+- Spinner
+- Shape Drawable
+- Change shape color dynamically
