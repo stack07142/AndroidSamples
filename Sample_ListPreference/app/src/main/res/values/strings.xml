@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Sample_ListPreference</string>
+    <string name="key_color">backgroundColor</string>
+</resources>

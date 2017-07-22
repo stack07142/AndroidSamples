@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:defaultValue="#FFFF0059"
+        android:entries="@array/color_name"
+        android:entryValues="@array/color_values"
+        android:icon="@mipmap/ic_launcher"
+        android:key="@string/key_color"
+        android:summary="Choose a background color"
+        android:title="Background Color">
+
+
+    </ListPreference>
+
+</PreferenceScreen>
