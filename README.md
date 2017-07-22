@@ -79,3 +79,10 @@
 - Spinner
 - Shape Drawable
 - Change shape color dynamically
+
+### 13. Sample_ListPreference
+
+![](https://dl.dropboxusercontent.com/s/jhpczwyg7t19d6l/D3F104AF-3297-41D6-A7B6-167DBFB95670-749-0000D2EF6B1B7596.gif?dl=0)
+
+- ListPreference
+
