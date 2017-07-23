@@ -6,12 +6,26 @@
     android:layout_height="match_parent"
     tools:context="com.android.sample_firebase_auth.LoginActivity">
 
+    <TextView
+        android:id="@+id/ret_textview"
+        android:layout_width="368dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginStart="8dp"
+        android:text=""
+        android:textColor="@color/colorAccent"
+        android:textSize="14sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/btn_signin" />
+
     <com.google.android.gms.common.SignInButton
         android:id="@+id/btn_signin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="41dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="38dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
