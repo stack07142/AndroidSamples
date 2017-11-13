@@ -93,7 +93,7 @@
 
 ### 15. Sample_VectorDrawable
 
-- ![VectorMaster](https://github.com/harjot-oberai/VectorMaster)
+- [VectorMaster](https://github.com/harjot-oberai/VectorMaster)
 - Dynamic control over vector drawable. Each and every aspect of a vector drawable can be controlled dynamically.
 - Change the color of individual path at runtime, without using reflection.
 
