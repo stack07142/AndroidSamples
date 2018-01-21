@@ -97,5 +97,11 @@
 - Dynamic control over vector drawable. Each and every aspect of a vector drawable can be controlled dynamically.
 - Change the color of individual path at runtime, without using reflection.
 
+### 16. Sample_CollapsingTooblar
+
+- Scolling techniques - Collapsing Toolbar
+- lock expanding/collapsing action programmatically
+- set menu to toolbar
+- Re-using layouts with include, merge
 
  
