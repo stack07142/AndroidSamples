@@ -29,10 +29,10 @@ public class SettingDividerItemDecoration extends RecyclerView.ItemDecoration {
     public static final int VERTICAL_SKIP_FIRST = 5;
     public static final int VERTICAL_SKIP_LAST = 6;
 
-    private Drawable mDivider;
+    private Drawable divider;
     private DisplayMetrics displayMetrics;
     @Type
-    private int mType;
+    private int type;
 
     private int outboundTopLeftMargin;
     private int outboundTopRightMargin;
@@ -43,8 +43,8 @@ public class SettingDividerItemDecoration extends RecyclerView.ItemDecoration {
 
     private SettingDividerItemDecoration(Builder builder) {
         displayMetrics = builder.context.getResources().getDisplayMetrics();
-        mDivider = ResourcesCompat.getDrawable(builder.context.getResources(), R.drawable.line_divider, builder.context.getTheme());
-        mType = builder.type;
+        divider = ResourcesCompat.getDrawable(builder.context.getResources(), R.drawable.line_divider, builder.context.getTheme());
+        type = builder.type;
 
         this.outboundTopLeftMargin = getPx(builder.outboundTopLeftMargin);
         this.outboundTopRightMargin = getPx(builder.outboundTopRightMargin);
@@ -105,14 +105,26 @@ public class SettingDividerItemDecoration extends RecyclerView.ItemDecoration {
         }
     }
 
+    // 1. Add space to the top of the Recycler View.
+    // 2. Add space to the bottom of each item in the Recycler View.
+    @Override
+    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+        int position = parent.getChildLayoutPosition(view);
+        int height = divider.getIntrinsicHeight();
+
+        outRect.set(0, position == 0 ? height : 0, 0, height);
+    }
+
+    // 3. Draw the divider within the added space.
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+        final int height = divider.getIntrinsicHeight();
         final int right = parent.getWidth() - parent.getPaddingRight();
 
         // 맨 위 아이템 윗 선
-        if (mType == VERTICAL_ALL || mType == VERTICAL_OUTBOUNDS || mType == VERTICAL_OUTBOUND_TOP || mType == VERTICAL_SKIP_LAST) {
-            mDivider.setBounds(outboundTopLeftMargin, 0, right - outboundTopRightMargin, mDivider.getIntrinsicHeight());
-            mDivider.draw(c);
+        if (type == VERTICAL_ALL || type == VERTICAL_OUTBOUNDS || type == VERTICAL_OUTBOUND_TOP || type == VERTICAL_SKIP_LAST) {
+            divider.setBounds(outboundTopLeftMargin, 0, right - outboundTopRightMargin, height);
+            divider.draw(c);
         }
 
         final int childCount = parent.getChildCount();
@@ -120,41 +132,36 @@ public class SettingDividerItemDecoration extends RecyclerView.ItemDecoration {
             final View child = parent.getChildAt(i);
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
             final int top = child.getBottom() + params.bottomMargin + Math.round(ViewCompat.getTranslationY(child));
-            final int bottom = top + mDivider.getIntrinsicHeight();
+            final int bottom = top + height;
 
-            if (mType == VERTICAL_FIRST_AND_OUTBOUND_BOTTOM) {
+            if (type == VERTICAL_FIRST_AND_OUTBOUND_BOTTOM) {
                 if (i == 0) {
-                    mDivider.setBounds(innerLeftMargin, top, right - innerRightMargin, bottom);
-                    mDivider.draw(c);
+                    divider.setBounds(innerLeftMargin, top, right - innerRightMargin, bottom);
+                    divider.draw(c);
                 } else if (i == childCount - 1) {
-                    mDivider.setBounds(outboundBottomLeftMargin, bottom - mDivider.getIntrinsicHeight(), right - outboundBottomRightMargin, bottom);
-                    mDivider.draw(c);
+                    divider.setBounds(outboundBottomLeftMargin, top, right - outboundBottomRightMargin, bottom);
+                    divider.draw(c);
                 }
-            } else if (mType == VERTICAL_OUTBOUNDS || mType == VERTICAL_OUTBOUND_BOTTOM) {
+            } else if (type == VERTICAL_OUTBOUNDS || type == VERTICAL_OUTBOUND_BOTTOM) {
                 if (i == childCount - 1) {
-                    mDivider.setBounds(outboundBottomLeftMargin, bottom - mDivider.getIntrinsicHeight(), right - outboundBottomRightMargin, bottom);
-                    mDivider.draw(c);
+                    divider.setBounds(outboundBottomLeftMargin, top, right - outboundBottomRightMargin, bottom);
+                    divider.draw(c);
                 }
-            } else if (mType == VERTICAL_SKIP_LAST) {
+            } else if (type == VERTICAL_SKIP_LAST) {
                 if (i != childCount - 1) {
-                    mDivider.setBounds(innerLeftMargin, bottom - mDivider.getIntrinsicHeight(), right - innerRightMargin, bottom);
-                    mDivider.draw(c);
+                    divider.setBounds(innerLeftMargin, top, right - innerRightMargin, bottom);
+                    divider.draw(c);
                 }
-            } else if (mType == VERTICAL_ALL || mType == VERTICAL_SKIP_FIRST) {
+            } else if (type == VERTICAL_ALL || type == VERTICAL_SKIP_FIRST) {
                 if (i == childCount - 1) {
-                    mDivider.setBounds(outboundBottomLeftMargin, bottom - mDivider.getIntrinsicHeight(), right - outboundBottomRightMargin, bottom);
-                    mDivider.draw(c);
+                    divider.setBounds(outboundBottomLeftMargin, top, right - outboundBottomRightMargin, bottom);
+                    divider.draw(c);
                 } else {
-                    mDivider.setBounds(innerLeftMargin, top, right - innerRightMargin, bottom);
-                    mDivider.draw(c);
+                    divider.setBounds(innerLeftMargin, top, right - innerRightMargin, bottom);
+                    divider.draw(c);
                 }
             }
         }
-    }
-
-    @Override
-    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
     }
 
     private int getPx(int dp) {
