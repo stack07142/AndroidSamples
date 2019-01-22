@@ -8,5 +8,12 @@
             android:icon="@drawable/ic_action_search"
             app:showAsAction="collapseActionView|ifRoom"
             app:actionViewClass="android.widget.SearchView"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText"/>
+
+    <item
+            android:id="@+id/findAll"
+            android:title="Find All"
+            android:icon="@drawable/ic_action_find_all"
+            app:showAsAction="always"
+            tools:ignore="HardcodedText"/>
 </menu>
