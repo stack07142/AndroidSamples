@@ -16,15 +16,16 @@ import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.MimeTypeFilter
 import io.reactivex.Observable
-import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.BiFunction
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.rxkotlin.toMap
 import io.reactivex.schedulers.Schedulers
 
 class MainActivity : AppCompatActivity() {
+    private val map: HashMap<String, Contact> = hashMapOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,19 +90,49 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("CheckResult")
     private fun getContacts() {
         Single.fromCallable { queryContacts() }
-            .flatMapObservable { cursor ->
-                Observable.fromIterable(RxCursorIterable.from(cursor))
-                    .doFinally {
-                        cursor.close()
-                    }
+            .flatMapObservable {
+                Observable.fromIterable(RxCursorIterable.from(it))
+                    .doFinally { it.close() }
             }
-            .map { it.getString(1) to it.getString(0) }
-            .toMap()
+            .reduce(hashMapOf<String, Contact>()) { map, cursor ->
+                val lookUpKey = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.LOOKUP_KEY))
+                val mimeType = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.MIMETYPE))
+                val contact = map.getOrPut(lookUpKey) { Contact() }
+                when (mimeType) {
+                    ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE -> {
+                        contact.name =
+                                cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME_PRIMARY))
+                        contact.givenName =
+                                cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME))
+                        contact.familyName =
+                                cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME))
+                    }
+                    ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE -> {
+                        val phoneType =
+                            cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE))
+                        val phoneNumber =
+                            cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                        when (phoneType) {
+                            "1" -> contact.phone1 = phoneNumber
+                            "2" -> contact.phone2 = phoneNumber
+                            "3" -> contact.phone3 = phoneNumber
+                            else -> contact.phone1 = phoneNumber
+                        }
+                    }
+                }
+                map
+            }
+            //.map { digestAllContactInfo(it) }
+            //.doOnNext { Log.w("Main", it) }
+            //.collect({ StringBuilder() }, { sb, s -> sb.append(s) })
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    Log.d("Main", "result= $it")
+                    it.asIterable().forEach {
+                        Log.w("result", "${it.value}")
+                    }
+                    Log.d("Main", "--end--")
                 },
                 onError = {
                     Log.d("Main", "error= ${it.message}")
@@ -111,15 +142,34 @@ class MainActivity : AppCompatActivity() {
 
     private fun queryContacts(): Cursor? {
         return contentResolver.query(
-            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+            ContactsContract.Data.CONTENT_URI,
             arrayOf(
-                ContactsContract.Contacts.DISPLAY_NAME,
+                ContactsContract.Contacts.LOOKUP_KEY,
+                ContactsContract.Data.MIMETYPE,
+                ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME_PRIMARY,
+                ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME,
+                ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME,
+                ContactsContract.CommonDataKinds.Phone.TYPE,
                 ContactsContract.CommonDataKinds.Phone.NUMBER
             ),
-            null, null,
-            ContactsContract.Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC"
+            ContactsContract.Data.MIMETYPE + " IN (?, ?)",
+            arrayOf(
+                ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE,
+                ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE
+            ),
+            ContactsContract.Contacts.DISPLAY_NAME_PRIMARY + ", " + ContactsContract.CommonDataKinds.Phone.TYPE + " COLLATE LOCALIZED ASC"
         )
     }
+
+/*    private fun digestAllContactInfo(cursor: Cursor): String {
+        val count = cursor.columnCount
+        val sb = StringBuilder()
+        for (i in 0 until count) {
+            sb.append(cursor.getString(i))
+            sb.append(" | ")
+        }
+        return sb.toString()
+    }*/
 }
 
 class RxCursorIterable(private val cursor: Cursor) : Iterable<Cursor> {
@@ -136,5 +186,27 @@ class RxCursorIterable(private val cursor: Cursor) : Iterable<Cursor> {
         companion object {
             fun from(cursor: Cursor): Iterator<Cursor> = RxCursorIterator(cursor)
         }
+    }
+}
+
+data class Contact(
+    var key: String? = null,
+    var name: String? = null,
+    var givenName: String? = null,
+    var familyName: String? = null,
+    var phone1: String? = null,
+    var phone2: String? = null,
+    var phone3: String? = null
+) {
+    override fun toString(): String {
+        return String.format(
+            "%20s | %20s | %20s | %20s | %20s | %20s\n",
+            name,
+            givenName,
+            familyName,
+            phone1,
+            phone2,
+            phone3
+        )
     }
 }
