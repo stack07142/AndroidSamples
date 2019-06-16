@@ -19,6 +19,8 @@ package com.example.android.codelabs.navigation
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import kotlinx.android.synthetic.main.home_fragment.*
@@ -46,13 +48,18 @@ class HomeFragment : Fragment() {
             })
         }
 
+        /**
+         * Navigate with an Action
+         * 1. [NavController].navigate()
+         * 2. [Navigation.createNavigateOnClickListener]
+         */
         /*navigate_action_button.setOnClickListener(
             Navigation.createNavigateOnClickListener(R.id.next_action, null)
         )*/
 
         navigate_action_button.setOnClickListener {
             val flowStepNumberArg = 1
-            val action = HomeFragmentDirections.nextAction(flowStepNumberArg)
+            val action = HomeFragmentDirections.nextAction(flowStepNumberArg) // generated class, function
             findNavController().navigate(action)
         }
     }

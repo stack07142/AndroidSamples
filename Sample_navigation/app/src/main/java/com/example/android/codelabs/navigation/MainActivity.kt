@@ -45,11 +45,17 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
+        /**
+         * [NavHostFragment]
+         */
         val host: NavHostFragment = supportFragmentManager
             .findFragmentById(R.id.my_nav_host_fragment) as NavHostFragment? ?: return
+        /**
+         * [NavController]
+         */
         val navController = host.navController
 
-        //appBarConfiguration = AppBarConfiguration(navController.graph)
+        appBarConfiguration = AppBarConfiguration(navController.graph)
 
         // TODO STEP 9.5 - Create an AppBarConfiguration with the correct top-level destinations
         // You should also remove the old appBarConfiguration setup above
@@ -71,6 +77,9 @@ class MainActivity : AppCompatActivity() {
          */
         bottom_nav_view?.setupWithNavController(navController)
 
+        /**
+         * Adds an [NavController.OnDestinationChangedListener] to this [NavController]
+         */
         navController.addOnDestinationChangedListener { _, destination, _ ->
             val dest: String = try {
                 resources.getResourceName(destination.id)
