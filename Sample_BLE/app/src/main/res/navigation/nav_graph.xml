@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/nav_graph"
+    app:startDestination="@+id/central_dest">
+
+    <fragment
+        android:id="@+id/central_dest"
+        android:name="k.t.sample_ble.fragments.CentralFragment"
+        android:label="CentralFragment" />
+
+    <fragment
+        android:id="@+id/peripheral_dest"
+        android:name="k.t.sample_ble.fragments.PeripheralFragment"
+        android:label="PeripheralFragment" />
+
+</navigation>

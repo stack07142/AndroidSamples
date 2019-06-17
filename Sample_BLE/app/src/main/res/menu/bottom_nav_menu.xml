@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@id/central_dest"
+        android:icon="@drawable/ic_arrow_forward"
+        android:title="Central"
+        tools:ignore="HardcodedText" />
+    <item
+        android:id="@id/peripheral_dest"
+        android:icon="@drawable/ic_arrow_back"
+        android:title="Peripheral"
+        tools:ignore="HardcodedText" />
+</menu>
