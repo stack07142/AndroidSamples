@@ -25,6 +25,7 @@ class CentralFragment : RxFragment() {
 
         rvScanList.apply {
             setHasFixedSize(true)
+            adapter = ScanResultAdapter()
         }
 
         btnScan.setOnClickListener {
@@ -34,32 +35,18 @@ class CentralFragment : RxFragment() {
 }
 
 class ScanResultAdapter : ListAdapter<ScanResultAdapter.Item, ScanResultAdapter.ItemViewHolder>(ItemCallback()) {
-    private val itemList: MutableList<Item>? = null
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.listitem_device, parent, false)
         return ItemViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        itemList?.get(position)?.let {
+        getItem(position)?.let {
             with(holder) {
                 tvDeviceName.text = it.name
                 tvDeviceAddress.text = it.address
             }
         }
-    }
-
-    override fun submitList(list: MutableList<Item>?) {
-        super.submitList(list)
-    }
-
-    fun add(item: Item) {
-        itemList?.add(item)
-    }
-
-    fun clear() {
-        itemList?.clear()
     }
 
     class ItemViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer
