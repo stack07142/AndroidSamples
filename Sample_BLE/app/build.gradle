@@ -43,6 +43,7 @@ dependencies {
     implementation 'com.trello.rxlifecycle3:rxlifecycle-components:3.0.0'
     implementation 'com.trello.rxlifecycle3:rxlifecycle-android-lifecycle-kotlin:3.0.0'
     implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation "org.apache.commons:commons-lang3:$commonsLangVersion"
 }
 
 

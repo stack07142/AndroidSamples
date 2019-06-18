@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Sample_BLE</string>
+    <string name="btn_scan">Scan %ds</string>
 </resources>
