@@ -9,7 +9,40 @@ import org.apache.commons.lang3.reflect.MethodUtils
 import timber.log.Timber
 import java.lang.ref.WeakReference
 
-object BLEUtils {
+object BLEAdvertiser {
+    private var advertiser: BluetoothLeAdvertiser? = null
+    private val callback = object : AdvertiseCallback() {
+        override fun onStartSuccess(settingsInEffect: AdvertiseSettings?) {
+            Timber.d("Advertising successfully started")
+        }
+
+        override fun onStartFailure(errorCode: Int) {
+            Timber.d("Advertising failed")
+        }
+    }
+
+    fun startAdvertise() {
+        val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter().apply {
+            name = "TEST"
+        }
+
+        val settings = AdvertiseSettings.Builder().build()
+        val data = AdvertiseData.Builder().apply {
+            setIncludeDeviceName(true)
+            addServiceUuid(ParcelUuid(BLEProfile.SERVICE_UUID))
+        }.build()
+
+        advertiser = bluetoothAdapter.bluetoothLeAdvertiser
+        advertiser?.startAdvertising(settings, data, callback)
+    }
+
+    fun stopAdvertise() {
+        advertiser?.stopAdvertising(callback)
+        advertiser = null
+    }
+}
+
+object BLEScanner {
     fun startScan(): Observable<List<ScanResult>> {
         return Observable.create { e ->
             val filters = ScanFilter.Builder().apply {
@@ -17,7 +50,7 @@ object BLEUtils {
             }.build()
 
             val settings = ScanSettings.Builder().apply {
-                setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
+                //setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
                 setReportDelay(2000L)
             }.build()
 

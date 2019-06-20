@@ -5,23 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ToggleButton
-        android:id="@+id/toggleButton"
+    <Switch
+        android:id="@+id/btnAdvertise"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:background="#3F51B5"
         android:paddingStart="1dp"
         android:paddingTop="0dp"
         android:paddingEnd="1dp"
         android:paddingBottom="0dp"
         android:text="advertise"
-        android:textColor="#FFEB3B"
-        android:textOff="advertise off"
-        android:textOn="advertise on"
-        android:textSize="10sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

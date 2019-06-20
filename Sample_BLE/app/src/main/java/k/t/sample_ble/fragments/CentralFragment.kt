@@ -15,7 +15,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import k.t.sample_ble.R
-import k.t.sample_ble.ble.BLEUtils
+import k.t.sample_ble.ble.BLEScanner
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.central_fragment.*
 import kotlinx.android.synthetic.main.listitem_device.*
@@ -43,7 +43,9 @@ class CentralFragment : RxFragment() {
         btnScan.text = getString(R.string.btn_scan, SCAN_PERIOD)
         btnScan.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                scanDisposable = BLEUtils.startScan()
+                scanResultAdapter.submitList(null)
+
+                scanDisposable = BLEScanner.startScan()
                     .takeUntil(Observable.timer(SCAN_PERIOD, TimeUnit.SECONDS))
                     .compose(bindToLifecycle())
                     .subscribeOn(Schedulers.io())
@@ -83,6 +85,10 @@ class ScanResultAdapter : ListAdapter<ScanResult, ScanResultAdapter.ItemViewHold
                 tvDeviceAddress.text = it.device.address
             }
         }
+    }
+
+    override fun submitList(list: MutableList<ScanResult>?) {
+        super.submitList(list)
     }
 
     class ItemViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer
