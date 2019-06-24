@@ -22,11 +22,15 @@ object BLEAdvertiser {
     }
 
     fun startAdvertise() {
-        val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter().apply {
-            name = "TEST"
-        }
+        val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
 
-        val settings = AdvertiseSettings.Builder().build()
+        val settings = AdvertiseSettings.Builder().apply {
+            setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_BALANCED)
+            setConnectable(true)
+            setTimeout(0)
+            setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
+        }.build()
+
         val data = AdvertiseData.Builder().apply {
             setIncludeDeviceName(true)
             addServiceUuid(ParcelUuid(BLEProfile.SERVICE_UUID))
@@ -43,7 +47,7 @@ object BLEAdvertiser {
 }
 
 object BLEScanner {
-    fun startScan(): Observable<List<ScanResult>> {
+    fun startScan(): Observable<ScanResult> {
         return Observable.create { e ->
             val filters = ScanFilter.Builder().apply {
                 setServiceUuid(ParcelUuid(BLEProfile.SERVICE_UUID))
@@ -51,7 +55,6 @@ object BLEScanner {
 
             val settings = ScanSettings.Builder().apply {
                 //setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
-                setReportDelay(2000L)
             }.build()
 
             val callback = object : ScanCallback() {
@@ -59,11 +62,11 @@ object BLEScanner {
 
                 override fun onScanResult(callbackType: Int, result: ScanResult) {
                     Timber.tag("BLE SCANNER").d("onScanResult : %d %s", callbackType, result)
+                    onNext(result)
                 }
 
                 override fun onBatchScanResults(results: List<ScanResult>) {
                     Timber.tag("BLE SCANNER").d("onBatchScanResults(count) : %d", results.size)
-                    onNext(results)
                 }
 
                 override fun onScanFailed(errorCode: Int) {
@@ -71,9 +74,9 @@ object BLEScanner {
                     tryOnError(IllegalStateException("onScanFailed $errorCode"))
                 }
 
-                private fun onNext(results: List<ScanResult>) {
+                private fun onNext(result: ScanResult) {
                     val emitter = refEmitter.get()
-                    emitter?.onNext(results)
+                    emitter?.onNext(result)
                 }
 
                 private fun tryOnError(error: Throwable) {
