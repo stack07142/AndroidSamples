@@ -6,6 +6,8 @@ import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker.PERMISSION_GRANTED
@@ -58,6 +60,5 @@ class MainActivity : RxAppCompatActivity() {
 
     private fun allPermissionsGranted(): Boolean =
         permissions.all { ContextCompat.checkSelfPermission(this, it) == PERMISSION_GRANTED }
-
 }
 
